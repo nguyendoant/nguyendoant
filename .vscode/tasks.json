@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Project",
+            "type": "shell",
+            "command": "make all",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "make clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Simulation",
+            "type": "shell",
+            "command": "make run-simulate",
+            "problemMatcher": [],
+            "dependsOn": ["Build Project"]
+        },
+        {
+            "label": "Run Server",
+            "type": "shell",
+            "command": "make run-server",
+            "problemMatcher": [],
+            "dependsOn": ["Build Project"]
+        },
+        {
+            "label": "Run Client",
+            "type": "shell",
+            "command": "make run-client",
+            "problemMatcher": [],
+            "dependsOn": ["Build Project"]
+        },
+        {
+            "label": "Run Benchmark",
+            "type": "shell",
+            "command": "make run-benchmark",
+            "problemMatcher": [],
+            "dependsOn": ["Build Project"]
+        },
+        {
+            "label": "Generate Certificates",
+            "type": "shell",
+            "command": "./scripts/generate_certs.sh",
+            "problemMatcher": []
+        }
+    ]
+}

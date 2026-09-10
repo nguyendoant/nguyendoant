@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug - Simulate",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/hl7_app",
+            "args": ["simulate"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build Project"
+        },
+        {
+            "name": "Debug - Server",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/hl7_app",
+            "args": ["server"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build Project"
+        },
+        {
+            "name": "Debug - Client",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/hl7_app",
+            "args": ["client"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build Project"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/include",
+        "/opt/homebrew/opt/openssl@3/include",
+        "/usr/local/opt/openssl@3/include"
+    ],
+    "C_Cpp.default.compilerPath": "/usr/bin/clang++",
+    "C_Cpp.default.cppStandard": "c++11",
+    "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
+    "files.associations": {
+        "*.hpp": "cpp",
+        "iostream": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "chrono": "cpp",
+        "thread": "cpp",
+        "atomic": "cpp"
+    },
+    "editor.formatOnSave": false,
+    "editor.tabSize": 4,
+    "files.exclude": {
+        "**/.DS_Store": true,
+        "**/hl7_app": true
+    }
+}

@@ -1,0 +1,17 @@
+# Build outputs
+hl7_app
+*.o
+*.out
+
+# Certificates (never commit private keys!)
+certs/*.key
+certs/*.pem
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/.browse.VC.db*
+
+# Logs
+*.log
