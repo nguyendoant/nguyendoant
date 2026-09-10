@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -490,7 +491,20 @@ private:
            << "|" << abnormal_flag << "|||F"
            << HL7_CARRIAGE_RETURN;
     }
-};() << "||ORU^R01|" << control_id << "|P|2.5"
+
+public:
+    // Create ORU (Observation Result Unsolicited) message
+    static HL7Message create_oru_result(const std::string& patient_id,
+                                         const std::string& test_name,
+                                         const std::string& test_value,
+                                         const std::string& units,
+                                         const std::string& ref_range) {
+        std::stringstream ss;
+        std::string control_id = generate_control_id();
+
+        // MSH - Message Header
+        ss << "MSH|^~\\&|LAB|FACILITY|EHR|HOSPITAL|"
+           << get_timestamp() << "||ORU^R01|" << control_id << "|P|2.5"
            << HL7_CARRIAGE_RETURN;
         
         // PID - Patient Identification
@@ -535,22 +549,6 @@ private:
            << HL7_CARRIAGE_RETURN;
         
         return HL7Message(ss.str());
-    }
-    
-private:
-    static std::string get_timestamp() {
-        auto now = std::chrono::system_clock::now();
-        auto time_t = std::chrono::system_clock::to_time_t(now);
-        std::stringstream ss;
-        ss << std::put_time(std::localtime(&time_t), "%Y%m%d%H%M%S");
-        return ss.str();
-    }
-    
-    static std::string generate_control_id() {
-        static std::atomic<int> counter{1};
-        std::stringstream ss;
-        ss << "MSG" << std::setfill('0') << std::setw(8) << counter++;
-        return ss.str();
     }
 };
 
@@ -622,6 +620,7 @@ public:
 };
 
 class TCPSocket {
+    friend class TCPServer;
 protected:
     int sock_fd = -1;
     SSL* ssl = nullptr;

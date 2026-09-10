@@ -5,6 +5,8 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <atomic>
+#include "hl7_tcp.hpp"
 
 using namespace LowLatencyNet;
 
@@ -275,7 +277,8 @@ void hl7_stress_test() {
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
                         end - start).count();
-                    total_time_ms += duration;
+                    double old_total = total_time_ms.load();
+                    while (!total_time_ms.compare_exchange_weak(old_total, old_total + duration)) {}
                 }
             } catch (const std::exception& e) {
                 std::cerr << "Client " << i << " error: " << e.what() << std::endl;
