@@ -12,10 +12,28 @@ if ! command -v g++ &> /dev/null && ! command -v clang++ &> /dev/null; then
     exit 1
 fi
 
-if ! brew list openssl@3 &> /dev/null 2>&1; then
-    echo "❌ OpenSSL not found"
-    echo "Install with: brew install openssl@3"
-    exit 1
+UNAME_S="$(uname -s)"
+if [ "$UNAME_S" = "Darwin" ]; then
+    # macOS: this project links against Homebrew's OpenSSL (see Makefile).
+    if ! brew list openssl@3 &> /dev/null 2>&1; then
+        echo "❌ OpenSSL not found"
+        echo "Install with: brew install openssl@3"
+        exit 1
+    fi
+else
+    # Linux (e.g. inside the RHEL10 dev container): no Homebrew here, so
+    # actually try compiling+linking against OpenSSL instead of checking
+    # for a package manager that doesn't exist on this platform.
+    OPENSSL_CHECK_BIN="$(mktemp /tmp/hl7_openssl_check.XXXXXX)"
+    if ! echo '#include <openssl/ssl.h>
+int main(){return 0;}' | g++ -x c++ - -o "$OPENSSL_CHECK_BIN" -lssl -lcrypto 2>/dev/null; then
+        rm -f "$OPENSSL_CHECK_BIN"
+        echo "❌ OpenSSL dev headers/libs not found"
+        echo "Install with: sudo dnf install -y openssl-devel   (RHEL/UBI/Fedora)"
+        echo "           or: sudo apt install -y libssl-dev     (Debian/Ubuntu)"
+        exit 1
+    fi
+    rm -f "$OPENSSL_CHECK_BIN"
 fi
 
 # Build
